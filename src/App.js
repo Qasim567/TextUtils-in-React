@@ -1,24 +1,58 @@
-import logo from './logo.svg';
 import './App.css';
+import React ,{useState} from "react";
+import About from './components/About';
+import Navbar from './components/Navbar';
+import Textform from './components/Textform';
+import Alert from './components/Alert';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
+  const [mode,setmode]=useState('light')
+  const [alert,setalert]=useState(null)
+
+  const showalert=(message,type)=>{
+    setalert({
+      message:message,
+      type:type
+    })
+    setTimeout(()=>{
+      setalert(null)
+    }, 2000)
+  }
+  const toggleMode=()=>{
+    if(mode=== 'light'){
+      setmode('dark')
+      document.body.style.backgroundColor='#042743';
+      showalert('Dark Mode has been enabled','success')
+    }
+    else{
+      setmode('light')
+      document.body.style.backgroundColor='white';
+      showalert('Light Mode has been enabled','success')
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <BrowserRouter>
+      <Navbar title='Textutils' mode={mode} toggleMode={toggleMode}/>
+      <Alert alert={alert}/>
+      <div className="container my-3">
+      <Routes>
+            <Route exact path="/about" element={<About mode={mode}/>}></Route>
+            <Route
+              exact path="/"
+              element={
+                <Textform
+                  showAlert={showalert}
+                  heading="Enter Text to analyze "
+                  mode={mode}
+                />
+              }
+            ></Route>
+      </Routes>
+      </div> 
+      </BrowserRouter>    
+    </>
   );
 }
 
