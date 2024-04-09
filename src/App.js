@@ -43,7 +43,7 @@ function App() {
               exact path="/"
               element={
                 <Textform
-                  showAlert={showalert}
+                  showalert={showalert}
                   heading="Enter Text to analyze "
                   mode={mode}
                 />
